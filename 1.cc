@@ -1,70 +1,143 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <map>
+#include <stack>
+#include <queue>
+#include <cstdlib>
+#include <cstdio>
+#include <string>
+#include <cstring>
+#include <cassert>
+#include <utility>
+#include <iomanip>
+
 using namespace std;
 
-//trying to do the matrix sol in c++, i try this, cz i want to be a good engineer soon in Google / Meta / Amazon / Netflix, or maybe AI engineer at AI google DeepMind ? or Anthropic ? etc ??? we never know, i always pray to god for my future
-int main() {
-    int arr[10][10],i,j ,row,col,count = 0,k = 0,sp[15][3],tran[10][3];
-    cout << "\nENTER HOW MANY ROWS AND COLOUMNS";
-    cin >> row>>col;
-    for (i = 0; i < row; i++)
-        for (int j = 0; j < col; j++)
-        {
-            cout << endl << "Enter a number";
-            cin >> arr[i][j];
-        }
+const int MAXN = 205000;
+const int ALPH = 256;
+const int MAXLOG = 20;
 
-        cout << "\nENTER THE ARRAY ELEMENTS ARE\n";
-        for (i = 0;i < col; i++) {
-            cout << setw(4) << arr[i][j];
-            cout << endl;
-        }
+int n;
+char s[MAXN];
+int p[MAXN]; // suffix array itself
+int pcur[MAXN];
+int c[MAXN][MAXLOG];
+int num[MAXN];
+int classesNum;
+int lcp[MAXN];
 
-        for (i = 0;i < row;i++)
-            for (j = 0; j < col;j++)
-                if (arr[i][j] != 0)
-                    count++;
+void buildSuffixArray() {
+    n++;
 
-        sp[0][0] = row;
-        sp[0][1] = col;
-        sp[0][2] = col;
+    for (int i = 0; i < n; i++) 
+        num[s[i]]++;    
 
-        k = 1;
+    for (int i = 1; i < ALPH; i++)
+        num[i] += num[i - 1];
 
-        for (i = 0;i < row;i++)
-            for (j = 0;k < col;j++) {
-                if(arr[i][j] != 0) {
-                    sp[k][0] = i;
-                    sp[k][1] = j;
-                    sp[k][2] = arr[i][j];
-                    k++;
-                }
-            }
-        cout << "\nTHE SPRASE MATRIX IS\n";
-        for (i = 0;i <= count;i++) {
-            for (j = 0;j < 3;j++)
-                cout << " " << sp[i][j];
-                cout << endl;
-        }
-
-        tran[0][0] = col;
-        tran[0][1] = col;
-        tran[0][2] = count;
-        k = 1;
-        for (i = 0; i < col;i++)
-            for (j = 1;j <= col;j++) {
-                if (sp[i][j] == 1) {
-                    {
-                        tran[k][0]=sp[j][1];
-                        tran[k][1]=sp[j][0];
-                        tran[k][2]=sp[j][2];
-                         k++;
-                }
-            }
-
-    cout << "\nTRANSPOSE OF THE SPRASE MATRIX : ";
-    for (i = 0; i <= count;i++) {
-        for (j = 0; j < 3;j++)
-        cout << setw(5) << tran[i][j];
-        cout << endl;
+    for (int i = 0; i < n; i++) {
+        p[num[s[i]] - 1] = i;
+        num[s[i]]--;
     }
+
+    c[p[0]][0] = 1;
+    classesNum = 1;
+    for (int i = 1; i < n; i++) {
+        if (s[p[i]] != s[p[i - 1]])
+            classesNum++;
+        c[p[i]][0] = classesNum;
+    }
+
+    for (int i = 1; ; i++) {
+        
+        int half = (1 << (i - 1));      
+        
+        for (int j = 0; j < n; j++) {
+            pcur[j] = p[j] - half;
+            if (pcur[j] < 0)
+                pcur[j] += n;   
+        }
+
+        for (int j = 1; j <= classesNum; j++)
+            num[j] = 0;
+
+        for (int j = 0; j < n; j++) 
+            num[c[pcur[j]][i - 1]]++;
+        for (int j = 2; j <= classesNum; j++)
+            num[j] += num[j - 1];
+        
+        for (int j = n - 1; j >= 0; j--) {
+            p[num[c[pcur[j]][i - 1]] - 1] = pcur[j];
+            num[c[pcur[j]][i - 1]]--;
+        }
+
+        c[p[0]][i] = 1;
+        classesNum = 1;
+
+        for (int j = 1; j < n; j++) {
+            int p1 = (p[j] + half) % n, p2 = (p[j - 1] + half) % n;
+            if (c[p[j]][i - 1] != c[p[j - 1]][i - 1] || c[p1][i - 1] != c[p2][i - 1])
+                classesNum++;
+            c[p[j]][i] = classesNum;
+        }
+
+        if ((1 << i) >= n)
+            break;
+    }
+
+    for (int i = 0; i < n; i++)
+        p[i] = p[i + 1];
+    n--;
+}
+
+int getLcp(int a, int b) {
+    int res = 0;
+    for (int i = MAXLOG - 1; i >= 0; i--) {
+        int curlen = (1 << i);
+        if (curlen > n)
+            continue;
+        if (c[a][i] == c[b][i]) {
+            res += curlen;
+            a += curlen;
+            b += curlen;
+        }
+    }
+    return res;
+}
+
+void calcLcpArray() {
+    for (int i = 0; i < n - 1; i++)
+        lcp[i] = getLcp(p[i], p[i + 1]);
+}
+
+int main() {
+    assert(freopen("substr.in","r",stdin));
+    assert(freopen("substr.out","w",stdout));
+
+    gets(s);
+    n = strlen(s);
+
+    buildSuffixArray();
+
+    // Now p from 0 to n - 1 contains suffix array of original string
+
+    /*for (int i = 0; i < n; i++) {
+        printf("%d ", p[i] + 1);
+    }*/
+
+    calcLcpArray();
+
+    long long ans = 0;
+    for (int i = 0; i < n; i++)
+        ans += n - p[i];
+    for (int i = 1; i < n; i++)
+        ans -= lcp[i - 1];
+
+    cout << ans << endl;
+
+    return 0;
 }
