@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+//trying to do the matrix sol in c++, i try this, cz i want to be a good engineer soon in Google / Meta / Amazon / Netflix, or maybe AI engineer at AI google DeepMind ? or Anthropic ? etc ??? we never know, i always pray to god for my future
 int main() {
     int arr[10][10],i,j ,row,col,count = 0,k = 0,sp[15][3],tran[10][3];
     cout << "\nENTER HOW MANY ROWS AND COLOUMNS";
