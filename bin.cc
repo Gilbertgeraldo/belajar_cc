@@ -1,33 +1,32 @@
 #include<iostream>
+#include<string>
 using namespace std;
 
-int Binarysearch(int arr[],int size,int target) {
-    int left = 0;
-    int right = 0;
+class Mobil {
+    public :
+        string merk;
+        int kecepatan;
 
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            return mid;
+        void nyalakanmesin() {
+            cout << merk << " Menyalakan mesin." << endl;
         }
-
-        if (arr[mid] < target) {
-            left = mid + 1;
-        }else {
-            right = mid + 1;
-        }
-    }
-    return -1;
-}
+};
 
 int main() {
-    int data[] = {12,23,34,56,78,89};
-    int size = sizeof(data) / sizeof(data[0]);
-    int target = 89;
-    int result = Binarysearch(data,size,target);
-    if (result != -1) 
-        cout << "element found at index : " << i << endl;
-    else 
-        cout << "element not found in array" << endl;
-        return 0;
+    Mobil mobilsaya;
+    mobilsaya.merk = "toyota";
+    mobilsaya.kecepatan = 0;
+    mobilsaya.nyalakanmesin();
+    return 0;
 }
+// int globalVar = 10;
+
+// void printGlobal() {
+//     cout << "Fungsi global :" << globalVar << endl; 
+// }
+
+// int main() { 
+//     cout << "Global var : (dalam main function)" << globalVar << endl;
+//     printGlobal();
+//     return 0;
+// }
