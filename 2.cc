@@ -1,52 +1,25 @@
 #include<bits/stdc++.h>
-
 using namespace std;
 
-int search(vector<int> arr, int target) {
-    int left = 0;
-    int right = arr.size() - 1;
+typedef long long ll;
+typedef long double ld;
+#define pb push_back
+#define mp make_pair
 
-    int m = left + (right - left) /2;
+int hitung_vokal(string s) {
+    if (s.empty()) {return 0;}
 
-    if (arr[m] == target) { 
-        return m;
-    }
+    char c = tolower(s[0]);
+    bool isVokal = (c == 'a' || c == 'i' || c == 'u' || c == 'e' || c == 'o');
 
-    if (arr[m] > target) { 
-        left = m + 1;
+    if (isVokal) {
+        return 1 + hitung_vokal(s.substr(1));
     }else {
-        right = m - 1;
+        return 0 + hitung_vokal(s.substr(1));
     }
-    return -1;
 }
 
 int main() {
-    vector<int> a;
-    int n,vtr;
-    cin >> n;
-
-    for (int i = 0; i < n; i++) {
-        cout << "Masukan nilai ke : " << i + 1,cin >> vtr;
-        a.push_back(vtr);
-    }
-
-    sort(a.begin(),a.end());
-
-    cout << "data anda setelah diurutkan : " << endl;
-    for (auto value : a) {
-        cout << value << " ";
-    }
-    cout << endl;
-
-    int target;
-    cout << "Masukan angka target : ", cin >> target;
-
-    int res = search(a,target);
-
-    if (res != -1) {
-        cout <<"Angka anda ditemukan pada index ke-" << res << endl;
-    }else {
-        cout << "Angka anda tidak ditemukan dalam vector!" << endl;
-    }
+    cout << hitung_vokal("lorem ipsum dolor sit amet fermentum egestas luctus praesent torquent justo.") << endl;
     return 0;
 }
