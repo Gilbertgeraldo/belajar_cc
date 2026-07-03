@@ -3,7 +3,7 @@ using namespace std;
 
 class Node {
     public:
-    int value; 
+    int value;
     Node* next;
 
     Node(int v) {
@@ -26,47 +26,44 @@ void insertAtHead(Node* &head,int val) {
     head = newNode;
 }
 
-void insertAtEnd(Node* &head,int val) {
-
+void inserAtEnd(Node* &head,int val) {
     if (head == NULL) {
         insertAtHead(head,val);
         return;
     }
+
     Node* newNode = new Node(val);
     Node* temp = head;
     while(temp->next != NULL) {
         temp = temp->next;
     }
-    //temp sekarang sudah pointing ke node terakhir
     temp->next = newNode;
 }
 
-void insertAtMiddle(Node* head,int val,int position) {
+void insertAtMiddle(Node* &head,int val,int position) {
     if (position == 1) {
-    insertAtHead(head,val);
+        insertAtHead(head,val);
     }
 
-    Node* newNode = new Node(val);
+    Node* newnode = new Node(val);
     Node* prev = head;
     int count = 1;
     while(count < (position - 1)) {
         prev = prev->next;
         count++;
     }
-    newNode->next = prev->next;
-    prev->next = newNode;
-
+    newnode->next = prev->next;
+    prev->next = newnode;
 }
 
 void deleteAtHead(Node* &head) {
-    if (head == NULL) {
+    if(head == NULL) {
         return;
     }
 
     Node* temp = head;
     head = head->next;
     free(temp);
-    
 }
 
 void deleteAtEnd(Node* &head) {
@@ -92,6 +89,7 @@ void deleteAtMiddle(Node* &head,int position) {
         deleteAtHead(head);
         return;
     }
+
     Node* prev = head;
     int count = 1;
     while(count < (position - 1)) {
@@ -99,43 +97,44 @@ void deleteAtMiddle(Node* &head,int position) {
         count++;
     }
 
-    //prev is now pointing to node at position - 1
     Node* curr = prev->next;
     prev->next = curr->next;
     free(curr);
 }
 
-void updateNodeValue(Node* head,int k,int updateVal) {
+void deleteAlternateNode(Node* &head) {
     Node* temp = head;
-    int count = 1;
-    while(count < k) {
+    while(temp != NULL && temp->next != NULL) {
+        Node* deleteNode = temp->next;
+        temp->next = temp->next->next;
         temp = temp->next;
-        count++;
+        free(deleteNode); 
+    }
+}
+
+int findMiddleNode(Node* head) {
+    if (head == NULL) {
+        return -1;
+    }
+    Node* slow = head;
+    Node* fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
 
-    temp->value = updateVal;
+    //slow is now at the middle node
+    return slow->value; 
 }
-int main() {
 
-//1,2
-    Node* node1 = new Node(1);
-    Node* node2 = new Node(2);
-    node1->next = node2;
-    Node* head = node1;
-    traverse(head);
+int main() {
+    Node* head = NULL;
+    insertAtHead(head,1);
+    insertAtHead(head,2);
     insertAtHead(head,3);
-    traverse(head);
-    insertAtEnd(head,4);
-    traverse(head);
-    insertAtMiddle(head,5,3);
-    traverse(head);
-    deleteAtHead(head);
-    traverse(head);
-    deleteAtEnd(head);
-    traverse(head);
-    deleteAtMiddle(head,2);
-    traverse(head);
-    updateNodeValue(head,1,2);
-    traverse(head);
-    return 0;
+    insertAtHead(head,4);
+    insertAtHead(head,5);
+    cout << findMiddleNode(head) << endl;
 }
+
