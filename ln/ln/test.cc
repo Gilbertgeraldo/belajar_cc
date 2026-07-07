@@ -1,32 +1,36 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef vector<int> vi;
-typedef pair<int,int> pii;
+bool isprime(int n) {
+    if (n <= 1) {return false;}
+
+    for (int i = 2;i * i <= n;i++) {
+        if (n % i == 0) {return false;}
+        return true;
+    }
+}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    vector<int> v;
-    for (int i = 1;i < 10; i++) {
-        v.push_back(i);
-    }
+    int a,b;
+    if (cin >> a >> b) {
+        int start = min(a,b);
+        int end = max(a,b);
 
-    cout << "Using begin & end" << endl;
-    for (auto i = v.begin();i != v.end();++i) {
-        cout << *i << "\t";
-    }
+        vector<int>pr;
+        for (int i = start;i <= end;i++) {
+            if (isprime(i)) {
+                pr.push_back(i);
+            }
+        }
 
-    cout << "Using Cbegin & Cend" << endl;
-    for (auto i = v.cbegin();i != v.cend();++i) {
-        cout << *i << "\t";
-    }
-
-    cout << "Using Crbegin & Crend" << endl;
-    for (auto i = v.crbegin();i != v.crend();++i) {
-        cout << *i << "\t";
+        for (size_t i = 0;i < pr.size();i++) {
+            cout << pr[i];
+            if (i < pr.size() - 1) {cout << ", ";}
+        }
+        cout << "\n";
     }
     return 0;
 }
