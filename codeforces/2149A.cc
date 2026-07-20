@@ -31,23 +31,21 @@ const int MOD = 1e9 + 7;
 
 // ===== SOLVE =====
 void solve() {
-    ll n;
-    cin >> n;
-
-
-    if (n == 1) {
-        cout << 1 << endl;
-        return;
+    int t;cin >> t;
+    int cneg = 0,czero = 0;
+    for (int i = 0;i < t;++i) {
+        int k;cin>>k;
+        if (k == -1) {
+            cneg++;
+        }else if(k==0) {
+            czero++;
+        }
     }
-
-    if (n == 2 || n == 3) {
-        cout << "NO SOLUTION" << endl;
-        return;
+    int ans = czero;
+    if (cneg%2!=0) {
+        ans+=2;
     }
-
-    for(int i = 2;i <= n;i+=2) {
-        cout << i << " ";
-    }
+    cout << ans << endl;
 }
 
 int main() {
@@ -55,7 +53,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
 
     while (t--) {
         solve();
