@@ -10,24 +10,25 @@ ListNode(int x) : val(x), next(nullptr) {}
 ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-
- class Solution {
-    public:
-    ListNode* deleteDuplicates(ListNode* head) {
-        if (head == NULL || head->next == NULL) {
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(head == NULL) {
             return head;
         }
-        ListNode* curr = head;
 
-        while (curr != NULL && curr->next != NULL) {
-            if (curr->val == curr->next->val) {
-                ListNode* duplicate = curr->next;
+        while(head != NULL && head->val == val) {
+            head = head->next;
+        }
+
+        ListNode* curr = head;
+        while(curr != NULL && curr->next != NULL) {
+            if (curr->next->val == val) {
                 curr->next = curr->next->next;
-                delete duplicate;
             }else {
                 curr = curr->next;
             }
         }
         return head;
     }
- };
+};

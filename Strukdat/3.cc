@@ -12,7 +12,6 @@ struct Node {
 };
 
 void preOrder(Node* root) {
-    if  (!root) return;
     cout << root->val << " ";
     preOrder(root->left);
     preOrder(root->right);
