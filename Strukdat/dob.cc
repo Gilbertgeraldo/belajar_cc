@@ -32,12 +32,11 @@ void backwardTraversal(Node* head){
         temp = temp->prev;
     }cout << "NULL" << endl;
 }
-
-void insertAtStart(Node* &head,int v){
+void insertAtStart(Node* head,int v){
     Node* newNode = new Node(v);
-    while(head == nullptr){
+    if(head == nullptr){
         head = newNode;
-        return;  
+        return;
     }
     newNode->next = head;
     head->prev = newNode;
@@ -86,6 +85,54 @@ void deleteAtStart(Node* &head){
     head = head->next;
     head->prev = nullptr;
     delete temp;
+}
+
+void deleteAtEnd(Node* &head){
+    Node* temp = head;
+    while(temp->next != nullptr){
+        temp = temp->next;
+    }
+    Node* lastNode = temp->prev;
+    lastNode->next = nullptr;
+    delete lastNode;
+}
+
+void deleteAtMiddle(Node* head){
+  if(head == nullptr) return;
+  if(head->next == nullptr) {
+    delete head;
+    head = nullptr;
+    return;
+  }
+
+  Node* slow = head;
+  Node* fast = head;
+
+  while(fast && fast->next != nullptr){
+    slow = slow->next;
+    fast = fast->next->next;
+  }
+  if(slow->prev != nullptr) slow->prev->next = slow->next;
+  if(slow->next != nullptr) slow->next->prev = slow->prev;
+  delete slow;
+}
+
+void delEnd(Node* head,int pos){
+    if(pos == 1){
+        deleteAtStart(head);
+        return;
+    }
+    if(head == nullptr)return;
+    Node* temp = head;
+    for(int i = 1;i < pos;++i){
+        temp = temp->next;
+    }
+    Node* delNode = temp->next;
+    temp->next = delNode->next;
+    if(delNode->next != nullptr){
+        delNode->next->prev = temp;
+    }
+    delete delNode;
 }
 
 int main(){
