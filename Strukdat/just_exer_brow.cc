@@ -73,30 +73,64 @@ int findMinVal(Node* head){
 
 Node* getNodeAt(Node* head, int idx) {
     Node* curr = head;
-    for (int i = 0; i < idx && curr != nullptr; i++) {
+    for(int i = 1;i < idx && curr != nullptr;++i){
         curr = curr->next;
     }
     return curr;
 }
 
-void insertionsortLinkedList(Node* head){
-    Node* curr = head;
-    Node* prev = nullptr;
-    int sub = 0;
+void insertsort(Node* head){
+    if(head == nullptr) return;
+    int sub =0;
     int clen = countlen(head);
-    while(sub <= clen - 1){
+    while(sub < clen - 1){
         int ins = sub + 1;
         int t = sub;
-        while(t >= 0 && getNodeAt(head,t)->value > getNodeAt(head,t+1)->value){
+
+        while(t >= 0){
             Node* left = getNodeAt(head,t);
             Node* right = left->next;
 
-            int temp = left->value;
-            left->value = right->value;
-            right->value = temp;
-            ins--;
-            t--;
+            if(left != nullptr && right  !=  nullptr && left->value > right->value){
+                swap(left->value,right->value);
+                ins--;
+                t--;
+            }else{
+                break;
+            }
         }
         sub++;
     }
+}
+
+bool ispalindrome(Node* head){
+    if(head->next == nullptr){return true;}
+
+    //find the middle node
+    Node* slow =head; 
+    Node* fast = head;
+    while(fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    //reverse the linked list
+    Node* curr = head;
+    Node* prev = nullptr;
+    Node* next;
+    while(curr){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    //comparing the two half in linked list
+    Node* head2 = prev;
+    while(head2){
+        if(head->value != head2->value){
+            return false;
+        }
+        head = head->next;
+        head2 = head2->next;
+    }
+    return true;
 }
