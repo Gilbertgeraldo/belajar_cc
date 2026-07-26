@@ -56,12 +56,12 @@ void solve() {
     }
 
     ll ans = 1e18;
-
+ 
     for (ll tgt = 1;tgt <= 50;tgt++) {
         ll tnow = 0;
 
         for (int i =0;i < n;i++) {
-            tnow += ct(a[i],tgt);
+            tnow += ct(a[i],tgt); 
         }
         ans = min(ans,tnow);
     }
