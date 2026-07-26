@@ -146,3 +146,111 @@ Node* detectCycle(Node* head){
     }
     return nullptr;
 }
+
+// untuk menghitung panjang dari sebuah Linked List
+int countlen(Node* head){
+    Node* temp = head;
+    int count = 0;
+    while(temp != nullptr){
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int findMaxVal(Node* head){
+    if(head == nullptr) return 0;
+    int len = countlen(head);
+    int maxval = head->value;
+    Node* curr = head;
+    for(int i = 1; i <= len;i++){
+        if(curr->value > maxval){
+            maxval = curr->value;
+        }
+        curr = curr->next;
+    }
+    return maxval;
+} 
+
+int findMinVal(Node* head){
+    if(head == nullptr) return 0;
+    int len = countlen(head);
+    int minval = head->value;
+    Node* curr = head;
+    for(int i = 1;i <= len;i++){
+        if(curr->value < minval){
+            minval = curr->value;
+        }
+        curr = curr->next;
+    }
+    return minval;
+}
+
+bool isPalindrome(Node* head){
+    if(head->next == nullptr){
+        return true;
+    }
+
+    // find the middle node
+    Node* slow = head;
+    Node* fast = head;
+    while(fast && fast->next){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    //reverse the linked list
+    Node* curr = head;
+    Node* prev = nullptr;
+    Node* next;
+    while(curr){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    // comparing two linked list
+    Node* head2 = prev;
+    while(head2){
+        if(head->value != head2->value){
+            return false;
+        }
+        head = head->next;
+        head2 = head2->next;
+    }
+    return true;
+}
+
+// get intersect
+Node* intersect(Node* headA,Node* headB){
+    if(headA == nullptr && headB == nullptr){
+        return nullptr;
+    }
+
+    Node* l1 = headA;
+    Node* l2 = headB;
+    while(l1 != l2){
+        if(l1 == nullptr){
+            l1 = headB;
+        }else if(l2 == nullptr){
+            l2 = headA;
+        }else{
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+    }
+    return l1;
+}
+
+Node* removeDuplicates(Node* head){
+    Node* curr = head;
+    if(curr == nullptr && curr->next == nullptr){
+        if(curr->value == curr->next->value){
+            Node* temp = curr->next;
+            curr->next = curr->next->next;
+            delete temp;
+        }else{
+            curr = curr->next;
+        }
+    }
+    return head;
+}
