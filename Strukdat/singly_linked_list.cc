@@ -254,3 +254,28 @@ Node* removeDuplicates(Node* head){
     }
     return head;
 }
+
+Node* mergeLinkedList(Node* head1,Node* head2){
+    Node* dummyNode = new Node(-1);
+    Node* head3 = dummyNode;
+
+    // sama dengan while(head1 != nullptr && head2 != nullptr)
+    while(head1 && head2){
+        if(head1->value < head2->value){
+            head3->next = head1;
+            head1 = head1->next;
+        }else{
+            head3->next = head2;
+            head2 = head2->next;
+        }
+    }
+
+    //while(head1 != nullptr0)
+    if(head1){
+        head3->next = head1;
+    }
+    if(head2){
+        head3->next = head2; 
+    }
+    return dummyNode->next;
+}

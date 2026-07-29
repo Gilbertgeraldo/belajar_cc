@@ -1,61 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Node{
-    public:
-    int value;
-    Node* next;
+int main(){
+    stack<int> a;
 
-    Node(int v){
-        value = v;
-        next = nullptr;
-    }
-};
+    a.push(2);
+    a.push(3);
+    a.push(4);
 
-class Solution{
-    public:
-        Node* removeDuplicates(Node* head){
-            if(head == nullptr || head->next == nullptr){
-                return head;
-            }
+    cout << a.size() << endl;
+    cout << "Top element : " << a.top() << endl;
+    cout << "Removing the top element" << endl;
+    a.pop();
+    cout << "The top element after popping" << a.top() << endl;
+    a.pop();
+    cout << "After popping" << a.top() << endl;
+    
+    cout << a.empty() << endl;
 
-            Node* curr = head;
-            while(curr != nullptr && curr->next != nullptr){
-                if(curr->value == curr->next->value){
-                    Node* temp =curr->next;
-                    curr->next = curr->next->next;
-                    delete temp;
-                }else{
-                    curr = curr->next;
-                }
-            }
-            return head;
-        }
-    };
-
-int solve(Node* head){
-    if(head == nullptr || head->next == nullptr || head->next->next == nullptr){
-        return 0;
-    }
-
-    int count = 0;
-    Node* prev = head;
-    Node* curr = head->next;
-    Node* next = curr->next;
-
-    while(next != nullptr){
-        //local maximum
-        if(curr->value > prev->value && curr->value < prev->value){
-            count++;
-        }
-        //minimum
-        if(curr->value < prev->value && curr->value < next->value){
-            count++;
-        }
-
-        prev = curr;
-        curr = next;
-        next = next->next;
-    }
-    return count;
+    return 0; 
 }
