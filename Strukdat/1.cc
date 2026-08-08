@@ -1,141 +1,23 @@
 #include<bits/stdc++.h>
 using namespace std;
+class Solution {
+public:
+    int solve(int n,vector<int> &dp){
+        if(n <= 2){
+            return n;
+        }
+        if(dp[n] != -1){
+            return dp[n];
+        }
+        dp[n] = solve(n-1,dp) + solve(n-2,dp);
+        return dp[n];
+    }
 
-class Node {
-    public:
-    int value; 
-    Node* next;
-
-    Node(int v) {
-        value = v;
-        next = NULL;
+    int climbStairs(int n) {
+        if(n <= 2){
+            return n;
+        }
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
     }
 };
-
-void traverse(Node* head) {
-    Node* temp = head;
-    while(temp != NULL) {
-        cout << temp->value <<"->";
-        temp = temp->next;
-    }cout <<"NULL" << endl;
-}
-
-void insertAtHead(Node* &head,int val) {
-    Node* newNode = new Node(val);
-    newNode->next = head;
-    head = newNode;
-}
-
-void insertAtEnd(Node* &head,int val) {
-
-    if (head == NULL) {
-        insertAtHead(head,val);
-        return;
-    }
-    Node* newNode = new Node(val);
-    Node* temp = head;
-    while(temp->next != NULL) {
-        temp = temp->next;
-    }
-    //temp sekarang sudah pointing ke node terakhir
-    temp->next = newNode;
-}
-
-void insertAtMiddle(Node* head,int val,int position) {
-    if (position == 1) {
-    insertAtHead(head,val);
-    }
-
-    Node* newNode = new Node(val);
-    Node* prev = head;
-    int count = 1;
-    while(count < (position - 1)) {
-        prev = prev->next;
-        count++;
-    }
-    newNode->next = prev->next;
-    prev->next = newNode;
-
-}
-
-void deleteAtHead(Node* &head) {
-    if (head == NULL) {
-        return;
-    }
-
-    Node* temp = head;
-    head = head->next;
-    free(temp);
-    
-}
-
-void deleteAtEnd(Node* &head) {
-    if (head == NULL) {
-        return;
-    }
-    if (head->next == NULL) {
-        deleteAtHead(head);
-        return;
-    }
-    Node* secondLast = head;
-    while(secondLast->next->next != NULL) {
-        secondLast = secondLast->next;
-    }
-
-    Node* lastNode = secondLast->next;
-    secondLast->next = NULL;
-    free(lastNode);
-}
-
-void deleteAtMiddle(Node* &head,int position) {
-    if (position == 1) {
-        deleteAtHead(head);
-        return;
-    }
-    Node* prev = head;
-    int count = 1;
-    while(count < (position - 1)) {
-        prev = prev->next;
-        count++;
-    }
-
-    //prev is now pointing to node at position - 1
-    Node* curr = prev->next;
-    prev->next = curr->next;
-    free(curr);
-}
-
-void updateNodeValue(Node* head,int k,int updateVal) {
-    Node* temp = head;
-    int count = 1;
-    while(count < k) {
-        temp = temp->next;
-        count++;
-    }
-
-    temp->value = updateVal;
-}
-int main() {
-
-//1,2
-    Node* node1 = new Node(1);
-    Node* node2 = new Node(2);
-    node1->next = node2;
-    Node* head = node1;
-    traverse(head);
-    insertAtHead(head,3);
-    traverse(head);
-    insertAtEnd(head,4);
-    traverse(head);
-    insertAtMiddle(head,5,3);
-    traverse(head);
-    deleteAtHead(head);
-    traverse(head);
-    deleteAtEnd(head);
-    traverse(head);
-    deleteAtMiddle(head,2);
-    traverse(head);
-    updateNodeValue(head,1,2);
-    traverse(head);
-    return 0;
-}
