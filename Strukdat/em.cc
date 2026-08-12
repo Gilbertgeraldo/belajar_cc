@@ -37,7 +37,7 @@ void insertionsort(int arr[],int N){
     }
 }
 
-void MergeSort(int arr[],int aLeft,int aRight,int bLeft,int bRight){ 
+void MergeSort(int arr[],int aLeft,int aRight,int bLeft,int bRight){
     int size = (aRight - aLeft + 1) + (bRight - bLeft + 1);
     int *temp = new int[size];
 
@@ -56,7 +56,7 @@ void MergeSort(int arr[],int aLeft,int aRight,int bLeft,int bRight){
         tIdx++;
     }
 
-    while(aIdx <= aRight){
+    while(aIdx <= aRight){ 
         temp[tIdx] = arr[aIdx];
         aIdx++;
         tIdx++;
@@ -68,39 +68,68 @@ void MergeSort(int arr[],int aLeft,int aRight,int bLeft,int bRight){
         tIdx++;
     }
 
-    for(int i = 0;i < size;++i){
-        arr[aLeft+i] = temp[i];
+    for(int i = 1;i < size;i++){
+        arr[aLeft + i] = temp[i];
     }
     delete[] temp;
-
 }
 
-void quickSort(int arr[],int left,int right){
+void QuickSort(int arr[],int left,int right){
     if(left >= right){
         return;
     }
-
     int pivot = arr[(left + right)/2];
     int pLeft = left;
     int pRight = right;
 
-    while(pLeft <= pRight){
-        while(arr[pLeft] < pivot){
+    while(left <= right){
+        while(arr[pLeft] <= pivot){
             pLeft++;
         }
     }
 
     while(arr[pRight] > pivot){
-        pRight-- ;
+        pRight--;
     }
-
     if(pLeft <= pRight){
         swap(arr[pLeft],arr[pRight]);
-        pLeft++;
+        pLeft++;    
         pRight--;
     }
 }
 
+void heapify(int arr[], int N, int i) {
+
+    int largest = i;
+
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < N && arr[left] > arr[largest]) {
+        largest = left;
+    }
+
+    if (right < N && arr[right] > arr[largest]) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        swap(arr[i], arr[largest]);
+        heapify(arr, N, largest);
+    }
+}
+void heapSort(int arr[], int N) {
+    for (int i = N / 2 - 1; i >= 0; i--) {
+        heapify(arr, N, i);
+    }
+
+    for (int i = N - 1; i > 0; i--) {
+
+        swap(arr[0], arr[i]);
+
+        heapify(arr, i, 0);
+    }
+}
 void countingsort(int arr[],int N){
     int ft[1000001] = {0};
     for(int i = 0;i < N;++i){
