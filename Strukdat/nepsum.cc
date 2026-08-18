@@ -27,5 +27,5 @@ int main(){
     }
     int res = countTriples();
     cout << "Jumlah triplet " << res << endl;
-    return 0;
+    return 0;   
 }
