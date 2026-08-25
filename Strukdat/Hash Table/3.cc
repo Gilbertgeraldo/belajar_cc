@@ -25,6 +25,7 @@ void dfs(int start){
     }
 }
 
+
 void bfs(int start){
     bool vis[6] = {};
     queue<int> qu;
